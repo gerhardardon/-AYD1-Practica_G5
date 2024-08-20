@@ -7,7 +7,7 @@ function AgregarNota({ agregarNota }) {
   const [etiqueta, setEtiqueta] = useState('');
   const [error, setError] = useState(''); // Estado para manejar el error
 
-  const manejarSubmit = (e) => {
+  const manejarSubmit = async(e) => {
     e.preventDefault();
 
     if (titulo.trim() === '') {
@@ -16,14 +16,34 @@ function AgregarNota({ agregarNota }) {
     }
 
     const nuevaNota = { titulo, descripcion, etiqueta };
-    agregarNota(nuevaNota);
+    // Realizar la solicitud fetch
+    try {
+      const response = await fetch('http://localhost:4000/Agregar_Nota', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nuevaNota),
+      });
 
-    // Limpiamos los campos y el error
-    setTitulo('');
-    setDescripcion('');
-    setEtiqueta('');
-    setError('');
+      if (!response.ok) {
+        throw new Error('Error al agregar la nota');
+      }
+
+      const data = await response.json();
+      agregarNota(data); // Puedes pasar los datos obtenidos al agregar la nota si es necesario
+
+      // Limpiamos los campos y el error
+      setTitulo('');
+      setDescripcion('');
+      setEtiqueta('');
+      setError('');
+    } catch (error) {
+      setError('Hubo un problema al agregar la nota'); // Manejar el error
+    }
   };
+
+
 
   return (
     <div>
