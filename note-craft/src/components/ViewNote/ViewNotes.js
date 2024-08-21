@@ -31,25 +31,104 @@ function VerNota() {
     fetchNotas();
   }, []);
 
-  return (
-    <div className="notes-container">
+  const handleFijar = async (id) => {
+    console.log('Fijar nota con id:', id);
+    try {
+        const response = await fetch('http://localhost:4000/Fijar_Nota', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log(result.mensaje);
+            const updatedNotas = notas.map(nota =>
+              nota.Id === id ? { ...nota, Prioridad: 1 } : nota
+            );
+            setNotas(updatedNotas);
+        } else {
+            console.error(result.mensaje);
+        }
+    } catch (error) {
+        console.error('Error al fijar la nota:', error);
+    }
+  };
+
+  const handleDesFijar = async (id) => {
+    console.log('Fijar nota con id:', id);
+    try {
+        const response = await fetch('http://localhost:4000/Desfijar_Nota', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log(result.mensaje);
+            const updatedNotas = notas.map(nota =>
+              nota.Id === id ? { ...nota, Prioridad: 0 } : nota
+            );
+            setNotas(updatedNotas);
+        } else {
+            console.error(result.mensaje);
+        }
+    } catch (error) {
+        console.error('Error al fijar la nota:', error);
+    }
+  };
+
+return (
+  <div className="notes-container">
       <h2>Tus Notas</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {notas.length === 0 ? (
         <p>No hay notas disponibles.</p>
       ) : (
-        <ul className="notes-list">
-          {notas.map((nota, index) => (
-            <li key={index} className="note-item">
-              <h3>{nota.Titulo}</h3>
-              <p>{nota.Descripcion}</p>
-              <span className="note-tag">{nota.Etiqueta}</span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <div className="fijadas-container">
+            <h3>Fijado</h3>
+            <ul className="notes-list">
+              {notas.filter(nota => nota.Prioridad === 1).map((nota, index) => (
+                <li key={index} className="note-item">
+                  <h3>{nota.Titulo}</h3>
+                  <p>{nota.Descripcion}</p>
+                  <div className="note-tag-container">
+                    <span className="note-tag">{nota.Etiqueta}</span>
+                  </div>
+                  <div className="fijar-button-container">
+                    <button className="fijar-button" onClick={() => handleDesFijar(nota.Id)}>Desfijar</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="no-fijadas-container">
+            <h3>No Fijado</h3>
+            <ul className="notes-list">
+              {notas.filter(nota => nota.Prioridad === 0).map((nota, index) => (
+                <li key={index} className="note-item">
+                  <h3>{nota.Titulo}</h3>
+                  <p>{nota.Descripcion}</p>
+                  <div className="note-tag-container">
+                    <span className="note-tag">{nota.Etiqueta}</span>
+                  </div>
+                  <div className="fijar-button-container">
+                    <button className="fijar-button" onClick={() => handleFijar(nota.Id)}>Fijar</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </div>
-  );
+);
 }
 
 export default VerNota;

@@ -4,5 +4,6 @@ CREATE TABLE Notas(
 	NotaID INT Primary Key auto_increment,
     Titulo TEXT,
     Descripcion TEXT,
-    Etiqueta TEXT
+    Etiqueta TEXT,
+    Prioridad INT
 )
