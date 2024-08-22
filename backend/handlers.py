@@ -28,8 +28,8 @@ connection = pymysql.connect(host=db_host,
 def AgregarNotaHandler(titulo, descripcion, tag):
     try:
         with connection.cursor() as cursor:
-            sql = "INSERT INTO Notas (Titulo, Descripcion, Etiqueta) VALUES (%s, %s, %s)"
-            cursor.execute(sql, (titulo, descripcion, tag))
+            sql = "INSERT INTO Notas (Titulo, Descripcion, Etiqueta, Prioridad) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, (titulo, descripcion, tag, 0))
             connection.commit()  # Llamada correcta al método commit
 
         # Mensajes de depuración
@@ -43,6 +43,7 @@ def AgregarNotaHandler(titulo, descripcion, tag):
 
 def RecogerNotas():
     try:
+        print("Recuperando notas")
         with connection.cursor() as cursor:
             query = "SELECT * FROM Notas"
             cursor.execute(query)
@@ -51,11 +52,14 @@ def RecogerNotas():
                 return jsonify({'mensaje': 'No se encontraron notas'}), 404
             
             # Retornar el resultado en formato JSON
+            
             notas = [
                 {
+                    'Id': nota['NotaID'],
                     'Titulo': nota['Titulo'],
                     'Descripcion': nota['Descripcion'],
-                    'Etiqueta': nota['Etiqueta']
+                    'Etiqueta': nota['Etiqueta'],
+                    'Prioridad': nota['Prioridad']
                 } for nota in result
             ]
             
@@ -64,3 +68,27 @@ def RecogerNotas():
     except Exception as e:
         print(f"Error al recoger la nota: {e}")
         return None  # Devuelve None si ocurre un error
+    
+
+def FijarNota(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "UPDATE Notas SET Prioridad = 1 WHERE NotaID = %s"
+            cursor.execute(query, (id))
+            connection.commit()
+            return jsonify({'mensaje': 'Nota fijada'}), 200
+    except Exception as e:
+        print(f"Error al fijar la nota: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
+    
+
+def DesfijarNota(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "UPDATE Notas SET Prioridad = 0 WHERE NotaID = %s"
+            cursor.execute(query, (id))
+            connection.commit()
+            return jsonify({'mensaje': 'Nota fijada'}), 200
+    except Exception as e:
+        print(f"Error al fijar la nota: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500

@@ -34,6 +34,7 @@ def Agregar_Nota():
 
 @app.route('/Recuperar_Notas', methods=['GET'])
 def Recuperar_Notas():
+    print("Recuperando notas")
     try:
         notas = base.RecogerNotas()
         if notas is None:
@@ -43,6 +44,39 @@ def Recuperar_Notas():
         print(f"Error al obtener las notas: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
 
+@app.route('/Fijar_Nota', methods=['PUT'])
+def Fijar_Nota():
+    print("Procesando solicitud PUT para /Fijar_Nota")
+    try:
+        data = request.get_json()
+        print(data)
+        id = data.get('id')
+        if id is None:
+            return jsonify({'mensaje': 'ID no proporcionado'}), 400
+        
+        base.FijarNota(id)
+        return jsonify({'mensaje': 'Nota fijada'}), 200
+    
+    except Exception as e:
+        print(f"Error al procesar la solicitud PUT: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
+    
+@app.route('/Desfijar_Nota', methods=['PUT'])
+def Desfijar_Nota():
+    print("Procesando solicitud PUT para /Fijar_Nota")
+    try:
+        data = request.get_json()
+        print(data)
+        id = data.get('id')
+        if id is None:
+            return jsonify({'mensaje': 'ID no proporcionado'}), 400
+        
+        base.DesfijarNota(id)
+        return jsonify({'mensaje': 'Nota fijada'}), 200
+    
+    except Exception as e:
+        print(f"Error al procesar la solicitud PUT: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
 
 
 if __name__ == '__main__':
