@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ViewNotes.css';
+import '../DeleteNote/DeleteNotes.css';
+import { onEliminar } from '../DeleteNote/DeleteNote';
+
+
 
 function VerNota() {
   const [notas, setNotas] = useState([]);
   const [error, setError] = useState('');
+  const [refresh, setRefresh] = useState(true); 
 
   useEffect(() => {
     const fetchNotas = async () => {
@@ -28,8 +33,12 @@ function VerNota() {
       }
     };
 
-    fetchNotas();
-  }, []);
+    // Solo ejecuta fetchNotas cuando `refresh` cambie
+    if (refresh) {
+      fetchNotas();
+      setRefresh(false); // Resetea `refresh` después de ejecutar el efecto
+    }
+  }, [refresh]);
 
   const handleFijar = async (id) => {
     console.log('Fijar nota con id:', id);
@@ -83,6 +92,8 @@ function VerNota() {
     }
   };
 
+  
+
 return (
   <div className="notes-container">
       <h2>Tus Notas</h2>
@@ -119,7 +130,8 @@ return (
                     <span className="note-tag">{nota.Etiqueta}</span>
                   </div>
                   <div className="fijar-button-container">
-                    <button className="fijar-button" onClick={() => handleFijar(nota.Id)}>Fijar</button>
+                    <button className="fijar-button" onClick={() => handleFijar(nota.Id) }>Fijar</button>
+                    <button className="eliminar-button" onClick={() => onEliminar(nota.Id) && setRefresh(true)}>Eliminar</button>
                   </div>
                 </li>
               ))}

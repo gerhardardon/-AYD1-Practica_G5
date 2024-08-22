@@ -92,3 +92,14 @@ def DesfijarNota(id):
     except Exception as e:
         print(f"Error al fijar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+    
+def EliminarNota(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "DELETE FROM Notas WHERE NotaID = %s"
+            cursor.execute(query, (id))
+            connection.commit()
+            return jsonify({'mensaje': 'Nota eliminada'}), 200
+    except Exception as e:
+        print(f"Error al eliminar la nota: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500

@@ -78,6 +78,21 @@ def Desfijar_Nota():
         print(f"Error al procesar la solicitud PUT: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
 
+@app.route('/EliminarNota', methods=['DELETE'])
+def EliminarNota():
+    try:
+        data = request.get_json()
+        print(data)
+        id = data.get('id')
+        if id is None:
+            return jsonify({'mensaje': 'ID no proporcionado'}), 400
+        
+        base.EliminarNota(id)
+        return jsonify({'mensaje': 'Nota eliminada'}), 200
+        
+    except Exception as e:
+        print(f"Error al procesar la solicitud DELETE: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4000)
