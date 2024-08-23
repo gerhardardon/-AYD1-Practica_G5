@@ -1,0 +1,8 @@
+.eliminar-button {
+    padding: 5px 10px;
+    background-color: #ff1e00;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }

@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Matemasie&display=swap');
+body {
+  font-family: Arial, sans-serif;
+}
+
+#title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-family: "Matemasie", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
+    color: #A02334;
+}
+
+
+
+nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: #A02334;
+  color: #FFEEAD;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li:hover {
+  background-color: #FFEEAD;
+  color: #A02334;
+}
+
+#container {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  margin-left: 5%;
+  margin-right: 5%;
+}
