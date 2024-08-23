@@ -3,20 +3,11 @@ import './ViewNotes.css';
 import '../DeleteNote/DeleteNotes.css';
 import { onEliminar } from '../DeleteNote/DeleteNote';
 
-<<<<<<< HEAD
-
- 
-function VerNota() {
-  const [notas, setNotas] = useState([]);
-  const [error, setError] = useState('');
-  const [refresh, setRefresh] = useState(true);  
-=======
 function VerNota() {
   const [notas, setNotas] = useState([]);
   const [error, setError] = useState('');
   const [refresh, setRefresh] = useState(true); 
   const [filtroEtiqueta, setFiltroEtiqueta] = useState(''); // Estado para el filtro de etiqueta
->>>>>>> Feature/FiltrarNotas
 
   useEffect(() => {
     const fetchNotas = async () => {
@@ -30,7 +21,7 @@ function VerNota() {
 
         if (!response.ok) {
           throw new Error('Error al recuperar las notas');
-        } 
+        }
 
         const data = await response.json();
         setNotas(Array.isArray(data.notas) ? data.notas : []);
@@ -69,7 +60,32 @@ function VerNota() {
         console.error('Error al fijar la nota:', error);
     }
   };
-  
+
+  const handleArchivar = async (id) => {
+    try {
+      const response = await fetch('http://localhost:4000/Archivar_Nota', {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
+      });
+
+      if (response.ok) {
+          // const updatedNotas = notas.map(nota =>
+          //   nota.Id === id ? { ...nota, Prioridad: 2 } : nota
+          // );
+          // setNotas(updatedNotas);
+          console.log("gg")
+      } else {
+          const result = await response.json();
+          console.log("1")
+          console.error(result.mensaje);
+      }
+  } catch (error) {
+      console.error('Error al archivar la nota:', error);
+  }
+  };
 
   const handleDesFijar = async (id) => {
     try {
@@ -153,6 +169,7 @@ function VerNota() {
                   </div>
                   <div className="fijar-button-container">
                     <button className="fijar-button" onClick={() => handleFijar(nota.Id)}>Fijar</button>
+                    <button className="fijar-button" onClick={() => handleArchivar(nota.Id)}>Archivar</button>
                     <button className="eliminar-button" onClick={() => onEliminar(nota.Id) && setRefresh(true)}>Eliminar</button>
                   </div>
                 </li>
