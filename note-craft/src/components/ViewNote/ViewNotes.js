@@ -4,11 +4,11 @@ import '../DeleteNote/DeleteNotes.css';
 import { onEliminar } from '../DeleteNote/DeleteNote';
 
 
-
+ 
 function VerNota() {
   const [notas, setNotas] = useState([]);
   const [error, setError] = useState('');
-  const [refresh, setRefresh] = useState(true); 
+  const [refresh, setRefresh] = useState(true);  
 
   useEffect(() => {
     const fetchNotas = async () => {
@@ -22,7 +22,7 @@ function VerNota() {
 
         if (!response.ok) {
           throw new Error('Error al recuperar las notas');
-        }
+        } 
 
         const data = await response.json();
         console.log(data); // Verifica la estructura de los datos
@@ -65,6 +65,7 @@ function VerNota() {
         console.error('Error al fijar la nota:', error);
     }
   };
+  
 
   const handleDesFijar = async (id) => {
     console.log('Fijar nota con id:', id);
