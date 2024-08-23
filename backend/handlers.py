@@ -103,4 +103,33 @@ def EliminarNota(id):
     except Exception as e:
         print(f"Error al eliminar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+<<<<<<< HEAD
     
+=======
+    
+
+def FiltrarNotas(tag):
+    try:
+        with connection.cursor() as cursor:
+            query = "SELECT * FROM Notas WHERE Etiqueta = %s"
+            cursor.execute(query, (tag))
+            result = cursor.fetchall()
+            if not result:
+                return jsonify({'mensaje': 'No se encontraron notas'}), 404
+            # Retornar el resultado en formato JSON
+            notas = [
+                {
+                    'Id': nota['NotaID'],
+                    'Titulo': nota['Titulo'],
+                    'Descripcion': nota['Descripcion'],
+                    'Etiqueta': nota['Etiqueta'],
+                    'Prioridad': nota['Prioridad']
+                } for nota in result
+            ]
+            
+            return notas  # Devuelve las notas en formato adecuado para jsonify
+
+    except Exception as e:
+        print(f"Error al recoger la nota: {e}")
+        return None  # Devuelve None si ocurre un error
+>>>>>>> Feature/FiltrarNotas
