@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './HomePage.css';
 import AgregarNota from '../components/AddNotes/AddNotes';
 import VerNota from '../components/ViewNote/ViewNotes';
+import ArchivarNota from '../components/ArchiveNote/ArchiveNote';
 
 function HomePage() {
   const [view, setView] = useState('agregar'); // Enfocado en Agregar Nota
@@ -22,11 +23,13 @@ function HomePage() {
         <ul>
           <li onClick={() => setView('agregar')}>Agregar Nota</li>
           <li onClick={() => setView('ver')}>Ver Notas</li>
+          <li onClick={() => setView('verArchivo')}>Archivo</li>
         </ul>
       </nav>
       <div id="container">
         {view === 'agregar' && <AgregarNota agregarNota={agregarNota} />}
         {view === 'ver' && <VerNota notas={notas} />} {/* Mostramos VerNota */}
+        {view === 'verArchivo' && <ArchivarNota notas={notas} />} {/* Mostramos VerNota */}
       </div>
     </div>
   );

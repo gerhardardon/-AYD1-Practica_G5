@@ -60,6 +60,23 @@ def Fijar_Nota():
     except Exception as e:
         print(f"Error al procesar la solicitud PUT: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+
+@app.route('/Archivar_Nota', methods=['PUT'])
+def Archivar_Nota():
+    print("Procesando solicitud PUT para /Archivar_Nota")
+    try:
+        data = request.get_json()
+        print(data)
+        id = data.get('id')
+        if id is None:
+            return jsonify({'mensaje': 'ID no proporcionado'}), 400
+        
+        base.ArchivarNota(id)
+        return jsonify({'mensaje': 'Nota archivada'}), 200
+    
+    except Exception as e:
+        print(f"Error al procesar la solicitud PUT: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
     
 @app.route('/Desfijar_Nota', methods=['PUT'])
 def Desfijar_Nota():
@@ -73,6 +90,23 @@ def Desfijar_Nota():
         
         base.DesfijarNota(id)
         return jsonify({'mensaje': 'Nota fijada'}), 200
+    
+    except Exception as e:
+        print(f"Error al procesar la solicitud PUT: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
+
+@app.route('/Desarchivar_Nota', methods=['PUT'])
+def Desarchivar_Nota():
+    print("Procesando solicitud PUT para /Desarchivar_Nota")
+    try:
+        data = request.get_json()
+        print(data)
+        id = data.get('id')
+        if id is None:
+            return jsonify({'mensaje': 'ID no proporcionado'}), 400
+        
+        base.DesarchivarNota(id)
+        return jsonify({'mensaje': 'Nota desarchivada'}), 200
     
     except Exception as e:
         print(f"Error al procesar la solicitud PUT: {e}")
@@ -93,7 +127,6 @@ def EliminarNota():
     except Exception as e:
         print(f"Error al procesar la solicitud DELETE: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=4000)

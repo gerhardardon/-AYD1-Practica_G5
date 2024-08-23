@@ -80,6 +80,17 @@ def FijarNota(id):
     except Exception as e:
         print(f"Error al fijar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+
+def ArchivarNota(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "UPDATE Notas SET Prioridad = 2 WHERE NotaID = %s"
+            cursor.execute(query, (id))
+            connection.commit()
+            return jsonify({'mensaje': 'Nota archivada'}), 200
+    except Exception as e:
+        print(f"Error al archivar la nota: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
     
 
 def DesfijarNota(id):
@@ -92,6 +103,17 @@ def DesfijarNota(id):
     except Exception as e:
         print(f"Error al fijar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+
+def DesarchivarNota(id):
+    try:
+        with connection.cursor() as cursor:
+            query = "UPDATE Notas SET Prioridad = 0 WHERE NotaID = %s"
+            cursor.execute(query, (id))
+            connection.commit()
+            return jsonify({'mensaje': 'Nota desarchivada'}), 200
+    except Exception as e:
+        print(f"Error al desarchivar la nota: {e}")
+        return jsonify({'mensaje': 'Error interno del servidor'}), 500
     
 def EliminarNota(id):
     try:
@@ -103,9 +125,6 @@ def EliminarNota(id):
     except Exception as e:
         print(f"Error al eliminar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
-<<<<<<< HEAD
-    
-=======
     
 
 def FiltrarNotas(tag):
@@ -132,4 +151,3 @@ def FiltrarNotas(tag):
     except Exception as e:
         print(f"Error al recoger la nota: {e}")
         return None  # Devuelve None si ocurre un error
->>>>>>> Feature/FiltrarNotas
