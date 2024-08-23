@@ -103,3 +103,4 @@ def EliminarNota(id):
     except Exception as e:
         print(f"Error al eliminar la nota: {e}")
         return jsonify({'mensaje': 'Error interno del servidor'}), 500
+    
